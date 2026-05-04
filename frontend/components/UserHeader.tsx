@@ -40,7 +40,6 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
   const userName = user?.name || "";
   const userImage = user?.image || undefined;
   const userInitials = getInitials(userName);
-  console.log(user);
 
   // states and data for sharing profile
   const [showShareDialog, setShowShareDialog] = useState(false);
