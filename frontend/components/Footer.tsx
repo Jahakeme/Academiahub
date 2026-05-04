@@ -1,164 +1,191 @@
 import Image from "next/image";
-import {
-  AiFillInstagram,
-  AiFillLinkedin,
-  AiOutlineMail,
-  AiOutlinePhone,
-} from "react-icons/ai";
-import { FiMapPin } from "react-icons/fi";
 import Link from "next/link";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
+import { FaEnvelope } from "react-icons/fa";
+
 import { FaXTwitter } from "react-icons/fa6";
-
+import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
+const footerLinks = {
+  platform: {
+    name: "Platform",
+    links: [
+      {
+        title: "Home",
+        href: "/",
+      },
+      {
+        title: "Explore",
+        href: "/explore",
+      },
+      {
+        title: "Features",
+        href: "/features",
+      },
+      {
+        title: "How it works",
+        href: "/how-it-works",
+      },
+      {
+        title: "About us",
+        href: "/about-us",
+      },
+    ],
+  },
+  support: {
+    name: "Support",
+    links: [
+      {
+        title: "Help Center",
+        href: "/",
+      },
+      {
+        title: "Contact Us",
+        href: "/explore",
+      },
+    ],
+  },
+  legal: {
+    name: "Legal & Support",
+    links: [
+      {
+        title: "Terms of Service",
+        href: "/terms-and-conditions",
+      },
+      {
+        title: "Privacy Policy",
+        href: "/privacy-policy",
+      },
+      {
+        title: "Cookie Policy",
+        href: "/cookie-policy",
+      },
+      {
+        title: "Use Policy",
+        href: "/use-policy",
+      },
+    ],
+  },
+};
+const date = new Date();
+const currentYear = date.getFullYear();
 const Footer = () => {
-  const date = new Date();
-  const currentYear = date.getFullYear();
   return (
-    <footer className="bg-black w-full text-white">
-      <div className="px-6 lg:px-9 pt-25 pb-17">
-        <section className="flex flex-col gap-20">
-          {/* MAIN FOOTER COLUMNS */}
-          <div className="grid grid-cols-1 max-sm:justify-center sm:grid-cols-2 lg:grid-cols-3 lg:space-y-2 flex-wrap gap-13 lg:space-x-48 w-full ">
-            <div className="first-item max-w-81">
-              <header className="mb-16">
-                <Image
-                  src={"/assets/images/logo-white.png"}
-                  alt="AcademiaHub logo"
-                  width={180}
-                  height={50}
-                />
-                <p className="font-normal text-sm leading-[130%] mt-6.25">
-                  Browse the highest-rated projects and papers recommended by
-                  students and academic supervisors.
-                </p>
-              </header>
-
-              <div className="flex flex-col gap-3.75">
-                <div className="flex gap-4">
-                  <AiOutlineMail className="text-white text-[24px]" />
-                  <p className="font-normal text-sm leading-[130%]">
-                    support@Academiahub.com
-                  </p>
-                </div>
-                <div className="flex gap-4">
-                  <AiOutlinePhone className="text-white text-[24px]" />
-                  <p className="font-normal text-sm leading-[130%]">
-                    +234 (0) 800 123 4567
-                  </p>
-                </div>
-                <div className="flex gap-4">
-                  <FiMapPin className="text-white text-[24px]" />
-                  <p className="font-normal text-sm leading-[130%]">
-                    Lagos, Nigeria
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-[20px] mb-6.25">Platform</h3>
-              <ul className="flex flex-col gap-5">
-                <li>
-                  <Link className="text-[14px]" href="/">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-[14px]" href="/explore">
-                    Explore
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-[14px]" href="/features">
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-[14px]" href="/how-it-works">
-                    How it works
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-[14px]" href="/about-us">
-                    About us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-[20px] mb-6.25">Support</h3>
-              <ul className="flex flex-col gap-5">
-                <li className="text-[14px]">Help Center</li>
-                <li className="text-[14px]">Contact Us</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-[20px] mb-6.25">Legal & Support</h3>
-              <ul className="flex flex-col gap-5">
-                <Link href={"/terms-and-conditions"} className="text-[14px]">
-                  Terms of Service
-                </Link>
-                <Link href={"/privacy-policy"} className="text-[14px]">
-                  Privacy Policy
-                </Link>
-                <Link href={"/cookie-policy"} className="text-[14px]">
-                  Cookie Policy
-                </Link>
-                <Link href={"/use-policy"} className="text-[14px]">
-                  Use Policy
-                </Link>
-              </ul>
-            </div>
-
-            <div className="max-w-94">
-              <h3 className="font-bold text-[20px] mb-6.25">Stay Updated</h3>
-              <p className="text-[14px] leading-[130%]">
-                Get notified about new features, institutions and academic
-                resources
-              </p>
-              <Input
-                placeholder="Email Address"
-                className="bg-white rounded-3xl text-black placeholder:text-black text-[16px] mt-7.5 w-[80%]"
-              />
-            </div>
+    <footer className="bg-black w-full text-white px-4.5 pt-10.25 pb-13.5 md:pt-24.5 md:pb-26.5 md:px-10">
+      <div className="flex gap-2 justify-between gap-y-4 lg:gap-4 pb-30 flex-wrap md:pe-6.5  ">
+        {/* grid 1 */}
+        <div className="-order-2 basis-full md:basis-2/5 lg:basis-1/4">
+          <div className="relative w-39.5 h-7.25 mb-6.25">
+            <Image
+              src={"/assets/images/logo.png"}
+              alt="AcademiaHub logo"
+              fill
+              loading="lazy"
+            />
           </div>
+          <p className="md:text-base font-normal text-[14px] leading-4.5 md:leading-5 tracking-normal">
+            Browse the highest-rated projects and papers recommended by students
+            and academic supervisors.
+          </p>
+        </div>
+        {/* grid 2 */}
 
-          {/* DIVIDER */}
-          <hr className="border w-full opacity-30" />
+        <div className="basis-[47%] max-sm:my-8 md:basis-[27%]  lg:basis-[15%]">
+          {/* platform links */}
+          <h3 className="font-bold text-xl md:font-medium leading-6  mb-6.25">
+            {footerLinks.platform.name}
+          </h3>
+          <ul className="flex flex-col gap-5">
+            {footerLinks.platform.links.map(({ title, href }, index) => (
+              <li key={index}>
+                <Link
+                  className="text-[14px] md:text-base leading-4.5"
+                  href={href}
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          {/* SOCIAL ICONS + COPYRIGHT */}
-          <div className="w-full flex flex-col items-center gap-4">
-            <div className="flex items-center gap-3">
-              <Link
-                href="https://www.linkedin.com/company/academiahub-africa/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AiFillLinkedin className="text-[26px]" />
-              </Link>
-              <Link
-                href="https://www.instagram.com/academiahubafrica"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AiFillInstagram className="text-[26px]" />
-              </Link>
-              <Link
-                href="https://x.com/Academiahub_A"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaXTwitter className="text-[26px]" />
-              </Link>
-            </div>
+        {/* grid 3 */}
 
-            <p className="font-normal text-sm text-center mt-1 opacity-80">
-              ©{currentYear} AcademiaHubAfrica. All rights reserved.
-            </p>
+        <div className="basis-[47%] max-sm:my-8 md:basis-[27%]  lg:basis-[15%]">
+          {/* legal and support links */}
+          <h3 className="font-bold text-xl md:font-medium leading-6  mb-6.25">
+            {footerLinks.legal.name}
+          </h3>
+          <ul className="flex flex-col gap-5">
+            {footerLinks.legal.links.map(({ title, href }, index) => (
+              <li key={index}>
+                <Link
+                  className="text-[14px] md:text-base leading-4.5"
+                  href={href}
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="basis-full lg:basis-1/4">
+          <h3 className="font-bold text-xl md:font-medium leading-6  mb-6.25">
+            Stay Updated
+          </h3>
+          <p className="md:text-base font-normal mb-3 text-[14px] leading-4.5 md:leading-5 tracking-normal">
+            Get notified about new features, institutions and academic resources
+          </p>
+          <div className="flex items-center gap-2">
+            <Input
+              className="pl-4 rounded-2xl w-[70%] "
+              placeholder="Ochife@Mustapha.com"
+            />
+            <Button className="rounded-2xl">Subscribe</Button>
           </div>
-        </section>
+        </div>
+        <div className="flex items-center gap-2 max-sm:-order-1 basis-full">
+          <FaEnvelope className="shrink-0" />
+          <a
+            href="mailto:support@mail.academiahubafrica.org"
+            className="text-sm lg:text-base leading-4.5"
+          >
+            support@mail.academiahubafrica.org
+          </a>
+        </div>
+      </div>
+      <Separator className="mb-11.25" />
+      {/* icons */}
+      <div className="w-full flex flex-col md:flex-row  items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link
+            href="https://www.linkedin.com/company/academiahub-africa/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <AiFillLinkedin className="text-[26px]" />
+          </Link>
+          <Link
+            href="https://www.instagram.com/academiahubafrica"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <AiFillInstagram className="text-[26px]" />
+          </Link>
+          <Link
+            href="https://x.com/Academiahub_A"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaXTwitter className="text-[26px]" />
+          </Link>
+        </div>
+
+        <p className="font-normal mx-auto  text-sm text-center mt-1 opacity-80">
+          ©{currentYear} AcademiaHubAfrica. All rights reserved.
+        </p>
       </div>
     </footer>
   );
