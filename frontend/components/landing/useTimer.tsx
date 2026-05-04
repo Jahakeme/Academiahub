@@ -9,51 +9,48 @@ type TimeLeft = {
   seconds: number;
 };
 
-const TARGET_DATE = new Date("2026-05-31T23:59:59").getTime();
+const TARGET_DATE = new Date("2026-05-18T00:00:00Z").getTime();
+
+const computeTimeLeft = (): { timeLeft: TimeLeft; isLaunched: boolean } => {
+  const diff = TARGET_DATE - Date.now();
+  if (diff <= 0) {
+    return {
+      timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+      isLaunched: true,
+    };
+  }
+  return {
+    timeLeft: {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((diff % (1000 * 60)) / 1000),
+    },
+    isLaunched: false,
+  };
+};
 
 const Timer = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  const [isLaunched, setIsLaunched] = useState(false);
+  const [state, setState] = useState(() => computeTimeLeft());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const updateTimer = useCallback(() => {
-    const now = Date.now();
-    const diff = TARGET_DATE - now;
-
-    if (diff <= 0) {
-      setIsLaunched(true);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      return;
+  const tick = useCallback(() => {
+    const next = computeTimeLeft();
+    setState(next);
+    if (next.isLaunched && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    setTimeLeft({ days, hours, minutes, seconds });
   }, []);
 
   useEffect(() => {
-    updateTimer(); // Initial call
-
-    intervalRef.current = setInterval(updateTimer, 1000);
-
+    intervalRef.current = setInterval(tick, 1000);
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [updateTimer]);
-  return { timeLeft, isLaunched };
+  }, [tick]);
+
+  return state;
 };
 
 export default Timer;
