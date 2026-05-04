@@ -239,6 +239,17 @@ model Message {
   @@index([conversationId, createdAt(sort: Desc)])
 }
 
+model LaunchSignup {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  email          String    @unique
+  unsubscribed   Boolean   @default(false)
+  digestedAt     DateTime?
+  resendContactId String?
+  createdAt      DateTime  @default(now())
+
+  @@index([digestedAt, createdAt])
+}
+
 model ReadReceipt {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
   conversation      Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
