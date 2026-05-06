@@ -42,10 +42,8 @@ export function LaunchWelcomeEmail() {
               AcademiaHub goes live on <strong>{LAUNCH_DATE_LABEL}</strong>.
             </Text>
             <Text style={paragraph}>
-              In the meantime, sit tight. We&rsquo;re putting the finishing
-              touches on a place where students, researchers, and academics
-              across Africa can share work, find collaborators, and build
-              their reputations.
+              We’re really glad to have you with us and can’t wait to share what we’ve been building.
+              In the meantime, sit tight.
             </Text>
             <Text style={hint}>
               If you didn&rsquo;t sign up for this, you can safely ignore this

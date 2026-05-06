@@ -28,7 +28,10 @@ export async function GET(req: NextRequest) {
   }
 
   const pending = await prisma.launchSignup.findMany({
-    where: { digestedAt: null, unsubscribed: false },
+    where: {
+      OR: [{ digestedAt: null }, { digestedAt: { isSet: false } }],
+      NOT: { unsubscribed: true },
+    },
     orderBy: { createdAt: "asc" },
   });
 
@@ -64,6 +67,7 @@ export async function GET(req: NextRequest) {
     // digest only and let next run retry.
   }
 
+  let broadcastSent = false;
   if (dailySegmentId) {
     for (const row of pending) {
       try {
@@ -82,12 +86,24 @@ export async function GET(req: NextRequest) {
         react: LaunchWelcomeEmail(),
         send: true,
       });
-    } catch {
-      // Don't fail the run on broadcast errors; digest still goes out.
+      broadcastSent = true;
+    } catch (err) {
+      console.error("daily-broadcast: broadcast failed", err);
     }
   }
 
-  // 3. Internal digest to notify@.
+  // 3. Mark rows processed only if the welcome was actually delivered.
+  // Leaving them with digestedAt: null lets tomorrow's run retry cleanly.
+  if (broadcastSent) {
+    await prisma.launchSignup.updateMany({
+      where: { id: { in: pending.map((p) => p.id) } },
+      data: { digestedAt: new Date() },
+    });
+  }
+
+  // 4. Internal digest to notify@. Best-effort — failure must not undo
+  // the digestedAt mark above, otherwise subscribers get duplicate
+  // welcomes tomorrow.
   const emails = pending.map((p) => p.email);
   const { error: digestError } = await resend.emails.send({
     from: EMAIL_FROM,
@@ -96,17 +112,13 @@ export async function GET(req: NextRequest) {
     react: LaunchDigestEmail({ emails, date }),
   });
   if (digestError) {
-    return NextResponse.json(
-      { ok: false, error: digestError.message },
-      { status: 500 }
-    );
+    console.error("daily-broadcast: digest failed", digestError.message);
   }
 
-  // 4. Mark all processed.
-  await prisma.launchSignup.updateMany({
-    where: { id: { in: pending.map((p) => p.id) } },
-    data: { digestedAt: new Date() },
+  return NextResponse.json({
+    ok: true,
+    processed: broadcastSent ? pending.length : 0,
+    skipped: broadcastSent ? 0 : pending.length,
+    digestSent: !digestError,
   });
-
-  return NextResponse.json({ ok: true, processed: pending.length });
 }
