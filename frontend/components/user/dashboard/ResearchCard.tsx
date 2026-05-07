@@ -37,6 +37,7 @@ type ResearchCardProps = {
   showSaveButton?: boolean;
   onSaveToggle?: (isSaved: boolean) => void;
   onDelete?: (id: string) => void;
+  priority?: boolean;
 };
 
 const ResearchCard = ({
@@ -47,6 +48,7 @@ const ResearchCard = ({
   showSaveButton = true,
   onSaveToggle,
   onDelete,
+  priority = false,
 }: ResearchCardProps) => {
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -110,8 +112,11 @@ const ResearchCard = ({
           <Image
             className="rounded-t-[15px] object-cover"
             fill
+            sizes="(min-width: 1024px) 343px, (min-width: 640px) 50vw, 100vw"
             src={getCategoryImage(data.category)}
             alt="Publication image"
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
           />
         </div>
         {/* content */}
@@ -125,6 +130,7 @@ const ResearchCard = ({
                 <Image
                   className="rounded-full "
                   fill
+                  sizes="(min-width: 768px) 40px, 20px"
                   src={data.author.image}
                   alt={`${data.author.name}'s profile picture`}
                 />
@@ -223,6 +229,7 @@ const ResearchCard = ({
                   <Image
                     className="rounded-full "
                     fill
+                    sizes="(min-width: 768px) 40px, 20px"
                     src={data.author.image}
                     alt={`${data.author.name}'s profile picture`}
                   />

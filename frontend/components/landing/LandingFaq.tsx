@@ -19,12 +19,12 @@ const LandingFaq = ({ hideHeader, fullWidth = false }: LandingFaqProps) => {
       <div className={`w-full ${fullWidth ? "" : "lg:max-w-250"}`}>
         {!hideHeader && (
           <header className="mb-4 md:mb-15">
-            <h1 className="font-medium text-xl leading-[130%] text-center mt-2 md:mb-4 lg:font-bold lg:text-4xl">
+            <h2 className="font-medium text-xl leading-[130%] text-center mt-2 md:mb-4 lg:font-bold lg:text-4xl">
               Frequently Asked Questions
-            </h1>
-            <h3 className="font-medium text-sm lg:text-2xl lg:font-normal text-center leading-[130%]">
+            </h2>
+            <p className="font-medium text-sm lg:text-2xl lg:font-normal text-center leading-[130%]">
               Find answers to common questions about AcademiaHub
-            </h3>
+            </p>
           </header>
         )}
 
