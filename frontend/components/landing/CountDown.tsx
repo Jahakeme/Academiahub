@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Image from "next/image";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { MdOutlinePersonOutline } from "react-icons/md";
@@ -22,8 +23,17 @@ const CountDown = () => {
   }
 
   return (
-    <main className="h-screen w-full bg-linear-to-r from-[#CFD9F5] to-white">
-      <div className="flex flex-col gap-11 justify-center  h-full items-center px-4 py-12 max-w-6xl mx-auto">
+    <main className="relative h-screen w-full overflow-hidden bg-linear-to-r from-[#CFD9F5] to-white">
+      <Image
+        src="/assets/images/launch.svg"
+        alt=""
+        aria-hidden
+        priority
+        width={482}
+        height={692}
+        className="pointer-events-none absolute right-[87.92px] bottom-4 hidden md:block h-auto w-[clamp(220px,33vw,482px)] max-h-[calc(100vh-2rem)] select-none"
+      />
+      <div className="relative z-10 flex flex-col gap-11 justify-center  h-full items-center px-4 py-12 max-w-6xl mx-auto">
         <h1 className="leading-[100%] tracking-normal mb-8  text-center text-5xl md:text-6xl lg:text-[96px] md:text-[120px]">
           Launching Soon
         </h1>
@@ -36,7 +46,7 @@ const CountDown = () => {
           >
             <h2
               suppressHydrationWarning
-              className="leading-[100%]  backdrop-blur-sm p-2 md:p-4 shadow-xl tracking-widest text-6xl md:text-[72px] lg:text-[96px]    drop-shadow-md"
+              className="leading-[100%]  backdrop-blur-[25px] p-2 md:p-4 shadow-md tracking-widest text-6xl md:text-[72px] lg:text-[96px]"
             >
               {padZero(timeLeft.days)}
             </h2>
@@ -50,7 +60,7 @@ const CountDown = () => {
           >
             <h2
               suppressHydrationWarning
-              className="leading-[100%]  backdrop-blur-sm p-2 md:p-4 shadow-xl tracking-widest text-6xl md:text-[72px] lg:text-[96px]    drop-shadow-md"
+              className="leading-[100%]  backdrop-blur-[25px] p-2 md:p-4 shadow-md tracking-widest text-6xl md:text-[72px] lg:text-[96px]"
             >
               {padZero(timeLeft.hours)}
             </h2>
@@ -64,7 +74,7 @@ const CountDown = () => {
           >
             <h2
               suppressHydrationWarning
-              className="leading-[100%]  backdrop-blur-sm p-2 md:p-4 shadow-xl tracking-widest text-6xl md:text-[72px] lg:text-[96px]    drop-shadow-md"
+              className="leading-[100%]  backdrop-blur-[25px] p-2 md:p-4 shadow-md tracking-widest text-6xl md:text-[72px] lg:text-[96px]"
             >
               {padZero(timeLeft.minutes)}
             </h2>
@@ -78,7 +88,7 @@ const CountDown = () => {
           >
             <h2
               suppressHydrationWarning
-              className="leading-[100%]  backdrop-blur-sm md:p-4  p-2 shadow-xl px-6 tracking-widest text-6xl md:text-[72px] lg:text-[96px]    drop-shadow-md"
+              className="leading-[100%]  backdrop-blur-[25px] md:p-4  p-2 shadow-md px-6 tracking-widest text-6xl md:text-[72px] lg:text-[96px]"
             >
               {padZero(timeLeft.seconds)}
             </h2>
@@ -110,7 +120,7 @@ const CountDown = () => {
                 name="email"
                 type="email"
                 placeholder="Enter your email address"
-                className="h-full bg-white/70 backdrop-blur-sm rounded-2xl pl-12 pr-4 focus-visible:ring-0 rounded-r-none shadow-lg flex-1 border-0"
+                className="h-full bg-white/70 backdrop-blur-sm rounded-2xl pl-12 pr-4 focus-visible:ring-0 rounded-r-none flex-1 border-0"
                 required
                 disabled={pending}
                 aria-label="Email address"
@@ -122,7 +132,7 @@ const CountDown = () => {
               <Button
                 type="submit"
                 disabled={pending}
-                className="h-full rounded-2xl rounded-l-none px-8  shadow-lg  text-lg bg-primary hover:bg-primary/90"
+                className="h-full rounded-2xl rounded-l-none px-8 text-lg bg-primary hover:bg-primary/90"
               >
                 {pending ? "Sending…" : "Notify Me"}
               </Button>
