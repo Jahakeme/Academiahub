@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 type TimeLeft = {
   days: number;
@@ -11,13 +11,12 @@ type TimeLeft = {
 
 const TARGET_DATE = new Date("2026-05-18T00:00:00Z").getTime();
 
+const ZERO: TimeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
 const computeTimeLeft = (): { timeLeft: TimeLeft; isLaunched: boolean } => {
   const diff = TARGET_DATE - Date.now();
   if (diff <= 0) {
-    return {
-      timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
-      isLaunched: true,
-    };
+    return { timeLeft: ZERO, isLaunched: true };
   }
   return {
     timeLeft: {
@@ -31,24 +30,30 @@ const computeTimeLeft = (): { timeLeft: TimeLeft; isLaunched: boolean } => {
 };
 
 const Timer = () => {
-  const [state, setState] = useState(() => computeTimeLeft());
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const tick = useCallback(() => {
-    const next = computeTimeLeft();
-    setState(next);
-    if (next.isLaunched && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, []);
+  const [state, setState] = useState<{
+    timeLeft: TimeLeft;
+    isLaunched: boolean;
+    mounted: boolean;
+  }>({ timeLeft: ZERO, isLaunched: false, mounted: false });
 
   useEffect(() => {
-    intervalRef.current = setInterval(tick, 1000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    const tick = () => {
+      const next = computeTimeLeft();
+      setState({ ...next, mounted: true });
+      if (next.isLaunched && intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
     };
-  }, [tick]);
+
+    tick();
+    intervalId = setInterval(tick, 1000);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
 
   return state;
 };
