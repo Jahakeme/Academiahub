@@ -10,7 +10,7 @@ import HeroImg from "@/public/assets/images/LandingPage/desktop-hero-img.svg";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center bg-white font-sans">
+    <main className="flex flex-col items-center bg-white font-sans">
       <section className="hero-section w-full px-4 sm:px-6 pt-10 sm:pt-12 pb-6 lg:pl-12 lg:pr-0 overflow-hidden bg-linear-to-b from-[#E9EBF3] to-white">
         <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-0">
           {/* TEXT COLUMN */}
@@ -50,9 +50,10 @@ export default function Home() {
             <Image
               className="w-full h-auto lg:rounded-l-2xl"
               src={HeroImg}
-              alt="Hero image"
+              alt=""
               width={704}
               height={651}
+              sizes="(min-width: 1280px) 55vw, (min-width: 1024px) 50vw, 0px"
               priority
             />
           </div>
@@ -65,6 +66,6 @@ export default function Home() {
       <LandingAboutUs />
       <LandingFaq />
       <JoinUs />
-    </div>
+    </main>
   );
 }

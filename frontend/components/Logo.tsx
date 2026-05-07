@@ -7,8 +7,8 @@ const Logo = () => {
         src={"/assets/images/logo.png"}
         alt="AcademiaHub logo"
         width={158}
-        height={45}
-        style={{ height: "auto" }}
+        height={29}
+        priority
       />
     </Link>
   );

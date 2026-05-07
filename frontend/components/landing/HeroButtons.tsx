@@ -30,7 +30,7 @@ const HeroButtons = () => {
       </div>
 
       {/* Desktop Buttons */}
-      <div className="hidden md:flex w-full lg:w-105 max-lg:gap-3">
+      <div className="hidden md:flex w-full lg:w-105 gap-3">
         <Link href="/signup" className="w-full">
           <Button
             variant="default"
