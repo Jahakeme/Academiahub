@@ -29,13 +29,13 @@ const ExploreSection = async ({
   return (
     <section className="flex flex-col items-center min-[1290px]:mt-43.75 p-3">
       <header className="text-center mt-7.5 flex flex-col items-center gap-2">
-        <h1 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
+        <h2 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
           Explore and Find What You Need
-        </h1>
-        <h3 className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] mb-5">
+        </h2>
+        <p className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] mb-5">
           Search through thousands of publications by topic, university or field
           of study
-        </h3>
+        </p>
       </header>
 
       <div>
@@ -68,7 +68,10 @@ const ExploreSection = async ({
                   </h4>
                   <div className="flex items-center gap-1.5">
                     <Avatar className="w-10 h-10 shrink-0">
-                      <AvatarImage src={doc.author.image || undefined} />
+                      <AvatarImage
+                        src={doc.author.image || undefined}
+                        alt={`${doc.author.name ?? "Author"} profile picture`}
+                      />
                       <AvatarFallback>
                         {getInitials(doc.author.name || "")}
                       </AvatarFallback>
@@ -77,7 +80,7 @@ const ExploreSection = async ({
                       <p className="text-sm leading-[130%]">
                         {doc.author.name}
                       </p>
-                      <p className="text-[#AEAEAE] text-[14px] leading-[130%]">
+                      <p className="text-[#6B7280] text-[14px] leading-[130%]">
                         {doc.institution}
                       </p>
                     </div>

@@ -121,9 +121,10 @@ const Signup = () => {
             src={SignUpImg}
             alt="Education"
             fill
+            sizes="(min-width: 1024px) 50vw, 0px"
             className="w-full h-full object-cover object-bottom"
             placeholder="blur"
-            preload={true}
+            priority
           />
         </div>
       </div>
@@ -147,6 +148,8 @@ const Signup = () => {
                   src="/assets/images/Logoimage.png"
                   alt="AcademiaHub Logo Text"
                   fill
+                  sizes="(min-width: 768px) 248px, 179px"
+                  priority
                 />
               </div>
             </div>

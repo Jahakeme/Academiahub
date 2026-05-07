@@ -9,12 +9,12 @@ const LandingAboutUs = () => {
       <div className="w-full py-8 lg:py-12">
         <div className="max-w-350 mx-auto px-6 lg:px-12">
           <header className="mb-2 lg:mb-12">
-            <h1 className="font-medium text-xl lg:text-[32px] leading-[130%] text-center mb-2">
+            <h2 className="font-medium text-xl lg:text-[32px] leading-[130%] text-center mb-2">
               About Us
-            </h1>
-            <h3 className=" text-sm lg:text-2xl leading-[130%] text-center">
+            </h2>
+            <p className=" text-sm lg:text-2xl leading-[130%] text-center">
               Built by Students for Students
-            </h3>
+            </p>
           </header>
           <div className="flex flex-col lg:flex-row lg:gap-12 xl:gap-16 items-center justify-between">
             <div className="flex flex-col gap-5 mb-8 lg:mb-0 w-full lg:max-w-160.25">
@@ -71,7 +71,7 @@ const LandingAboutUs = () => {
                   </p>
                 </li>
               </ul>
-              <Link href={'/about-us'}>
+              <Link href={'/about-us'} aria-label="Learn more about AcademiaHub">
                 <Button variant={"default"} size={"lg"} className="w-68 h-11">
                   Learn More
                 </Button>
