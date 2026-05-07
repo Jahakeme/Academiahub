@@ -32,11 +32,11 @@ export async function ensureMainAudienceContact(
 export async function createDailySegment(
   date: string
 ): Promise<string | null> {
-  const { data, error } = await resend.audiences.create({
+  const { data, error } = await resend.segments.create({
     name: `launch-welcome-${date}`,
   });
   if (error) {
-    throw new Error(`Resend audiences.create failed: ${error.message}`);
+    throw new Error(`Resend segments.create failed: ${error.message}`);
   }
   return data?.id ?? null;
 }

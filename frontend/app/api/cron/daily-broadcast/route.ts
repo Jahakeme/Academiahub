@@ -59,28 +59,36 @@ export async function GET(req: NextRequest) {
 
   // 2. Create today's per-day segment and add only today's pending signups.
   // This isolates the welcome broadcast to new contacts only.
+  const errors: string[] = [];
   let dailySegmentId: string | null = null;
   try {
     dailySegmentId = await createDailySegment(date);
-  } catch {
-    // Without a fresh segment we can't safely broadcast — fall through to
-    // digest only and let next run retry.
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("daily-broadcast: createDailySegment failed", err);
+    errors.push(`createDailySegment: ${msg}`);
   }
 
   let broadcastSent = false;
+  let segmentAddFailures = 0;
   if (dailySegmentId) {
     for (const row of pending) {
       try {
         await addContactToSegment(row.email, dailySegmentId);
-      } catch {
-        // Ignore — broadcast may miss this contact this run; persistent
-        // audience still has them for the launch-day broadcast.
+      } catch (err) {
+        segmentAddFailures++;
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error(
+          `daily-broadcast: addContactToSegment failed for ${row.email}`,
+          err
+        );
+        errors.push(`addContactToSegment[${row.email}]: ${msg}`);
       }
     }
 
     try {
       await resend.broadcasts.create({
-        audienceId: dailySegmentId,
+        segmentId: dailySegmentId,
         from: EMAIL_FROM,
         subject: "You're on the AcademiaHub launch list",
         react: LaunchWelcomeEmail(),
@@ -88,7 +96,9 @@ export async function GET(req: NextRequest) {
       });
       broadcastSent = true;
     } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
       console.error("daily-broadcast: broadcast failed", err);
+      errors.push(`broadcasts.create: ${msg}`);
     }
   }
 
@@ -113,12 +123,15 @@ export async function GET(req: NextRequest) {
   });
   if (digestError) {
     console.error("daily-broadcast: digest failed", digestError.message);
+    errors.push(`digest: ${digestError.message}`);
   }
 
   return NextResponse.json({
-    ok: true,
+    ok: errors.length === 0,
     processed: broadcastSent ? pending.length : 0,
     skipped: broadcastSent ? 0 : pending.length,
+    segmentAddFailures,
     digestSent: !digestError,
+    errors,
   });
 }
