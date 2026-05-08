@@ -102,8 +102,9 @@ const Signincontent = () => {
             src={SignInImg}
             alt="Education"
             fill
+            sizes="(min-width: 1024px) 50vw, 0px"
             className="object-cover object-bottom"
-            preload={true}
+            priority
             placeholder="blur"
           />
         </div>
@@ -123,6 +124,8 @@ const Signincontent = () => {
                   src="/assets/images/Logoimage.png"
                   alt="AcademiaHub Logo Text"
                   fill
+                  sizes="(min-width: 768px) 248px, 179px"
+                  priority
                 />
               </div>
             </div>

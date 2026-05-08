@@ -81,6 +81,7 @@ const Footer = () => {
               src={"/assets/images/logo.png"}
               alt="AcademiaHub logo"
               fill
+              sizes="158px"
               loading="lazy"
             />
           </div>
@@ -164,22 +165,25 @@ const Footer = () => {
             href="https://www.linkedin.com/company/academiahub-africa/"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="AcademiaHub on LinkedIn"
           >
-            <AiFillLinkedin className="text-[26px]" />
+            <AiFillLinkedin className="text-[26px]" aria-hidden="true" />
           </Link>
           <Link
             href="https://www.instagram.com/academiahubafrica"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="AcademiaHub on Instagram"
           >
-            <AiFillInstagram className="text-[26px]" />
+            <AiFillInstagram className="text-[26px]" aria-hidden="true" />
           </Link>
           <Link
             href="https://x.com/Academiahub_A"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="AcademiaHub on X (Twitter)"
           >
-            <FaXTwitter className="text-[26px]" />
+            <FaXTwitter className="text-[26px]" aria-hidden="true" />
           </Link>
         </div>
 

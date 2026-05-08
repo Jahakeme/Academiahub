@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import AppProvider from "./AppProvider";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import { websiteJsonLd } from "@/lib/jsonld/website";
 import { organizationJsonLd } from "@/lib/jsonld/organisation";
 import { rootLayoutMetaData } from "./data/metadataExports";
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <script
           type="application/ld+json"
@@ -58,8 +58,21 @@ export default function RootLayout({
         <AppProvider>
           <Toaster position="top-right" reverseOrder={false} />
           {children}
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         </AppProvider>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="lazyOnload"
+            />
+            <Script id="ga-init" strategy="lazyOnload">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

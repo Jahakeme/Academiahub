@@ -52,7 +52,7 @@ const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}
 
   return (
     <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-      {filteredDocuments.map((data) => (
+      {filteredDocuments.map((data, index) => (
         <ResearchCard
           key={data.id}
           data={data}
@@ -61,6 +61,7 @@ const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}
           isSaved={savedDocumentIds.has(data.id)}
           showSaveButton={data.author.id !== userId}
           onDelete={handleDelete}
+          priority={index === 0}
         />
       ))}
     </section>
