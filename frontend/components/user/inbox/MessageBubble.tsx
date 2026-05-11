@@ -1,14 +1,17 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import parseMessageContent from "@/lib/messaging/urlSanitizer";
 import { formatMessageTime } from "@/lib/utils";
 import type { Message } from "@/app/_types/messaging";
-import { useSession } from "next-auth/react";
 
-export default function MessageBubble({ message }: { message: Message }) {
-  const { data: session } = useSession();
-  const isOwn = message.senderId === session?.user?.id;
-  const content = parseMessageContent(message.content);
+interface MessageBubbleProps {
+  message: Message;
+  isOwn: boolean;
+}
+
+function MessageBubble({ message, isOwn }: MessageBubbleProps) {
+  const content = useMemo(() => parseMessageContent(message.content), [message.content]);
 
   return (
     <div
@@ -37,3 +40,5 @@ export default function MessageBubble({ message }: { message: Message }) {
     </div>
   );
 }
+
+export default memo(MessageBubble);

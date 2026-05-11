@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { useSession } from "next-auth/react";
 import {
   useMessages,
   useNewMessages,
@@ -26,48 +27,69 @@ export default function ChatThread({
     useMessages(conversationId);
   const newMessages = useNewMessages(conversationId);
   const { markRead } = useReadMark();
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [unreadWhileScrolled, setUnreadWhileScrolled] = useState(0);
 
   // Flatten paginated history (API returns newest-first, so reverse to oldest-first)
-  // then append real-time messages at the end
-  const history = (data?.pages.flatMap((p) => p.messages) ?? []).toReversed();
-  const historyIds = new Set(history.map((m) => m.id));
-  const allMessages = [
-    ...history,
-    ...newMessages
-      .filter((m) => !historyIds.has(m.id))
-      .map((m) => ({
-        id: m.id,
-        conversationId: m.conversationId,
-        senderId: m.senderId,
-        content: m.content,
-        createdAt: m.createdAt,
-      })),
-  ];
+  // then append real-time messages at the end.
+  const allMessages = useMemo(() => {
+    const history = (data?.pages.flatMap((p) => p.messages) ?? []).toReversed();
+    const historyIds = new Set(history.map((m) => m.id));
+    return [
+      ...history,
+      ...newMessages
+        .filter((m) => !historyIds.has(m.id))
+        .map((m) => ({
+          id: m.id,
+          conversationId: m.conversationId,
+          senderId: m.senderId,
+          content: m.content,
+          createdAt: m.createdAt,
+        })),
+    ];
+  }, [data?.pages, newMessages]);
+
+  const lastMessageId = allMessages.length
+    ? allMessages[allMessages.length - 1].id
+    : null;
+
+  // Track new-message arrivals during render (React's documented
+  // "store info from previous renders" pattern) so the unread counter
+  // updates without a cascading setState-in-effect.
+  const [prevNewCount, setPrevNewCount] = useState(newMessages.length);
+  if (prevNewCount !== newMessages.length) {
+    const delta = newMessages.length - prevNewCount;
+    setPrevNewCount(newMessages.length);
+    if (delta > 0 && !isAtBottom) {
+      setUnreadWhileScrolled((c) => c + delta);
+    }
+  }
 
   // Auto-scroll when at bottom + new message arrives
   useEffect(() => {
     if (isAtBottom) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    } else if (newMessages.length > 0) {
-      setUnreadWhileScrolled((c) => c + 1);
     }
   }, [newMessages.length, isAtBottom]);
 
-  // Mark as read when at bottom and focused (STRIDE T8)
+  // Mark as read when at bottom — depend on last message id, not array length
   useEffect(() => {
-    if (!isAtBottom || allMessages.length === 0) return;
-    const lastMsg = allMessages[allMessages.length - 1];
-    markRead(conversationId, lastMsg.id);
-  }, [isAtBottom, allMessages.length]);
+    if (!isAtBottom || !lastMessageId) return;
+    markRead(conversationId, lastMessageId);
+  }, [isAtBottom, lastMessageId, conversationId, markRead]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     setUnreadWhileScrolled(0);
   }, []);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage) fetchNextPage();
+  }, [hasNextPage, fetchNextPage]);
 
   const partner = conversation?.otherParticipant;
 
@@ -78,8 +100,9 @@ export default function ChatThread({
       <div className="relative flex-1 flex flex-col overflow-hidden">
         <MessageList
           messages={allMessages}
+          currentUserId={currentUserId}
           onScrollStateChange={setIsAtBottom}
-          onLoadMore={() => hasNextPage && fetchNextPage()}
+          onLoadMore={handleLoadMore}
           isFetchingMore={isFetchingNextPage}
           messagesEndRef={messagesEndRef}
         />
