@@ -126,7 +126,7 @@ export async function handleMessageSend(
           type: "MESSAGE",
           message: `${sender?.name ?? "Someone"} sent you a message`,
           actorId: userId,
-          link: "/inbox",
+          link: `/inbox?c=${conversation.id}`,
         },
       });
 
