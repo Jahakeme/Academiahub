@@ -49,7 +49,6 @@ export default async function UserLayout({
     redirect("/onboarding");
   }
   const userInfoToShare = user?.Profile[0]?.user;
-  console.log("user info to share :", userInfoToShare);
   return (
     <SidebarProvider>
       <MobileSidebarSwipeZone />
