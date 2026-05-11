@@ -7,6 +7,7 @@ import MessageBubble from "./MessageBubble";
 
 interface MessageListProps {
   messages: Message[];
+  currentUserId: string | undefined;
   onScrollStateChange: (isAtBottom: boolean) => void;
   onLoadMore: () => void;
   isFetchingMore: boolean;
@@ -15,6 +16,7 @@ interface MessageListProps {
 
 export default function MessageList({
   messages,
+  currentUserId,
   onScrollStateChange,
   onLoadMore,
   isFetchingMore,
@@ -75,7 +77,10 @@ export default function MessageList({
                 </span>
               </div>
             )}
-            <MessageBubble message={message} />
+            <MessageBubble
+              message={message}
+              isOwn={message.senderId === currentUserId}
+            />
           </div>
         );
       })}

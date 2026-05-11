@@ -1,25 +1,23 @@
 "use client";
-import React from "react";
+import { memo } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   formatRelativeTime,
   getInitials,
   isUnread,
-  truncateText,
 } from "@/lib/messaging/utils";
 import { ConversationListItem } from "@/app/_types/messaging";
 import { usePresence } from "@/app/_contexts/PresenceContext";
+
 interface ConversationItemProps {
   currentUserId: string | undefined;
   conversation: ConversationListItem;
+  isSelected: boolean;
 }
-const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps) => {
+const ConversationItem = ({ currentUserId, conversation, isSelected }: ConversationItemProps) => {
   const onlineUsers = usePresence();
   const isActive = onlineUsers.has(conversation?.otherParticipant.id || "");
-  const searchParams = useSearchParams();
-  const isSelected = searchParams.get("c") === conversation.id;
 
   return (
     <Link
@@ -54,7 +52,7 @@ const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps
         <span className="text-xs leading-3.5 text-muted-foreground whitespace-nowrap">
           {formatRelativeTime(conversation.lastMessage?.createdAt || conversation.createdAt)}
         </span>
-       
+
         {isUnread(conversation, currentUserId) && (
           <div className="bg-primary-500 w-2 h-2 rounded-full"></div>
         )}
@@ -63,4 +61,4 @@ const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps
   );
 };
 
-export default ConversationItem;
+export default memo(ConversationItem);
