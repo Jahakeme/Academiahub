@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ConversationList from "./ConversationList";
 import ChatThread from "./ChatThread";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -14,8 +14,9 @@ const InboxView = () => {
   const conversationId = searchParams.get("c");
   const router = useRouter();
 
-  const selectedConversation = data?.find(
-    (conversation) => conversation.id === conversationId
+  const selectedConversation = useMemo(
+    () => data?.find((conversation) => conversation.id === conversationId),
+    [data, conversationId],
   );
 
   useEffect(() => {
@@ -37,7 +38,10 @@ const InboxView = () => {
       {/* Desktop screen */}
       <section className="hidden md:flex h-full overflow-hidden">
         <div className="w-87.5 h-full overflow-hidden">
-          <ConversationList conversations={data} />
+          <ConversationList
+            conversations={data}
+            selectedId={conversationId}
+          />
         </div>
         <div className="flex-1 h-full min-h-0">
           {!conversationId ? (
@@ -54,7 +58,10 @@ const InboxView = () => {
       {/* Mobile screen */}
       <section className="md:hidden h-full overflow-hidden">
         {!conversationId ? (
-          <ConversationList conversations={data} />
+          <ConversationList
+            conversations={data}
+            selectedId={conversationId}
+          />
         ) : (
           <ChatThread
             conversationId={conversationId}

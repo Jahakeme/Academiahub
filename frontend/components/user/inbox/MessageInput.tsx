@@ -38,6 +38,14 @@ export default function MessageInput({
     resizeTextarea();
   }, [text, resizeTextarea]);
 
+  // Clean up pending timers if the component unmounts mid-cooldown / mid-typing
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current) clearTimeout(cooldownTimerRef.current);
+      if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    };
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
     if (val.length > MAX_LENGTH) return;

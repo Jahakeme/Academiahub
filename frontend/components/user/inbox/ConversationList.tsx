@@ -3,35 +3,35 @@ import { ConversationListItem } from "@/app/_types/messaging";
 import { Input } from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
 import ConversationItem from "./ConversationItem";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { isUnread } from "@/lib/messaging/utils";
 import { useSession } from "next-auth/react";
 
 interface ConversationListProps {
   conversations?: ConversationListItem[];
+  selectedId: string | null;
 }
 
-const ConversationList = ({ conversations }: ConversationListProps) => {
+const ConversationList = ({ conversations, selectedId }: ConversationListProps) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "unread">("all");
-	const {data: session} = useSession();
-	const currentUserId = session?.user?.id;
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
 
-  const filteredConversations = conversations
-    ?.filter((conversation) => {
-      if (filter === "unread") {
-        return isUnread(conversation, currentUserId);
+  const filteredConversations = useMemo(() => {
+    if (!conversations) return undefined;
+    const needle = search.trim().toLowerCase();
+    return conversations.filter((conversation) => {
+      if (filter === "unread" && !isUnread(conversation, currentUserId)) {
+        return false;
+      }
+      if (needle) {
+        const name = (conversation?.otherParticipant.name || "").toLowerCase();
+        if (!name.includes(needle)) return false;
       }
       return true;
-    })
-    .filter((conversation) => {
-      if (!search.trim()) return true;
-
-      return (
-        (conversation?.otherParticipant.name ||
-        "").toLowerCase().includes(search.toLowerCase())
-      );
     });
+  }, [conversations, search, filter, currentUserId]);
 
   return (
     <div className="h-full flex flex-col mt-2 p-5 max-md:max-w-97.5 md:max-w-87.5">
@@ -68,6 +68,7 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
             key={conversation.id}
             currentUserId={currentUserId}
             conversation={conversation}
+            isSelected={selectedId === conversation.id}
           />
         ))}
       </section>
