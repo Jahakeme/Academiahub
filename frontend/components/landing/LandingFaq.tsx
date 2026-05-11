@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import { usePathname } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -6,7 +7,19 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 
-import { faqData } from "@/app/data/faqData";
+import {
+  faqData,
+  notificationsFaq,
+  profileFaq,
+  publicationFaq,
+  settingsFaq,
+} from "@/app/data/faqData";
+
+type FaqItem = {
+  id: number;
+  question: string;
+  answer: string;
+};
 
 interface LandingFaqProps {
   hideHeader?: boolean;
@@ -14,6 +27,14 @@ interface LandingFaqProps {
 }
 
 const LandingFaq = ({ hideHeader, fullWidth = false }: LandingFaqProps) => {
+  const pathname = usePathname();
+  const faqMap: Record<string, FaqItem[]> = {
+    "/support/publications": publicationFaq,
+    "/support/account": profileFaq,
+    "/support/settings": settingsFaq,
+    "/support/notifications": notificationsFaq,
+  };
+  const faqToUse = faqMap[pathname] || faqData;
   return (
     <div className="mt-10 md:mt-10.5 mb-8.25 flex justify-center">
       <div className={`w-full ${fullWidth ? "" : "lg:max-w-250"}`}>
@@ -37,7 +58,7 @@ const LandingFaq = ({ hideHeader, fullWidth = false }: LandingFaqProps) => {
             className="w-full space-y-4"
             defaultValue={`item-0`}
           >
-            {faqData.map((faq, index) => (
+            {faqToUse.map((faq, index) => (
               <AccordionItem
                 key={faq.question}
                 value={`item-${index}`}
