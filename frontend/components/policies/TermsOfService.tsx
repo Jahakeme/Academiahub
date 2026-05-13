@@ -371,12 +371,6 @@ const TermsOfService = () => {
                     support@mail.academiahubafrica.org
                   </a>
                 </p>
-                <p className="font-bold text-slate-900">
-                  Address:{" "}
-                  <span className="font-normal text-slate-700">
-                    AcademiaHub Africa, Legal Department Nigeria
-                  </span>
-                </p>
               </div>
             </section>
           </main>
