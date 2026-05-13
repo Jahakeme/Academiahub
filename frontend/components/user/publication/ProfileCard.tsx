@@ -29,10 +29,7 @@ const ProfileCard = ({
         </h2>
 
         <Avatar className="size-10  lg:size-22 mx-auto border! p-1 border-white! shadow-md">
-          <AvatarImage
-            className="rounded-full"
-            src={profile.image || undefined}
-          />
+          <AvatarImage src={profile.image || undefined} />
           <AvatarFallback>{getInitials(profile.name || "")}</AvatarFallback>
         </Avatar>
 

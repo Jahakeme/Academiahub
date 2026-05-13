@@ -450,6 +450,13 @@ const PrivacyPolicy = () => {
                     support@mail.academiahubafrica.org
                   </span>
                 </p>
+                <p>
+                  Postal Address:{" "}
+                  <span className="font-normal text-slate-700">
+                    AcademiaHub Africa, Data Protection Officer, [Registered
+                    Address], Nigeria
+                  </span>
+                </p>
               </div>
               <p className="mt-6">
                 If you are dissatisfied with our response, you may lodge a

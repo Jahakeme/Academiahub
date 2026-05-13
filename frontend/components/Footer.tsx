@@ -75,7 +75,7 @@ const Footer = () => {
     <footer className="bg-black w-full text-white px-4.5 pt-10.25 pb-13.5 md:pt-24.5 md:pb-26.5 md:px-10">
       <div className="flex gap-2 justify-between gap-y-4 lg:gap-4 pb-30 flex-wrap md:pe-6.5  ">
         {/* grid 1 */}
-        <div className=" basis-full md:basis-2/5 lg:basis-1/4  sm:mb-6 md:mb-2">
+        <div className="-order-2 basis-full md:basis-2/5 lg:basis-1/4">
           <div className="relative w-39.5 h-7.25 mb-6.25">
             <Image
               src={"/assets/images/logo.png"}
@@ -85,21 +85,10 @@ const Footer = () => {
               loading="lazy"
             />
           </div>
-          <div className="flex flex-col h-[78%] justify-between ">
-            <p className="md:text-base font-normal text-[14px] leading-4.5 md:leading-5 tracking-normal">
-              Browse the highest-rated projects and papers recommended by
-              students and academic supervisors.
-            </p>
-            <div className="flex items-center gap-2  ">
-              <FaEnvelope className="shrink-0" />
-              <a
-                href="mailto:support@mail.academiahubafrica.org"
-                className="text-sm lg:text-base leading-4.5"
-              >
-                support@mail.academiahubafrica.org
-              </a>
-            </div>
-          </div>
+          <p className="md:text-base font-normal text-[14px] leading-4.5 md:leading-5 tracking-normal">
+            Browse the highest-rated projects and papers recommended by students
+            and academic supervisors.
+          </p>
         </div>
         {/* grid 2 */}
 
@@ -157,6 +146,15 @@ const Footer = () => {
             />
             <Button className="rounded-2xl">Subscribe</Button>
           </div>
+        </div>
+        <div className="flex items-center gap-2 max-sm:-order-1 basis-full">
+          <FaEnvelope className="shrink-0" />
+          <a
+            href="mailto:support@mail.academiahubafrica.org"
+            className="text-sm lg:text-base leading-4.5"
+          >
+            support@mail.academiahubafrica.org
+          </a>
         </div>
       </div>
       <Separator className="mb-11.25" />
