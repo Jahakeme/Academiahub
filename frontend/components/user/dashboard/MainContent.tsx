@@ -50,9 +50,11 @@ const MainContent = async ({ search = "", category = "" }: MainContentProps) => 
         <div className="md:hidden w-full my-3">
           <SearchBar />
         </div>
-        <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
-          {search ? `Results for "${search}"` : "Research of the week"}
-        </h4>
+        {search ? (
+          <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
+            {`Results for "${search}"`}
+          </h4>
+        ) : null}
         <FilterDocuments
           userId={userId}
           documents={documents}
