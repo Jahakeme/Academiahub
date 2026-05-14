@@ -9,11 +9,22 @@ import type { Prisma } from "@prisma/client";
 type MainContentProps = {
   search?: string;
   category?: string;
+  sort?: string;
 };
 
 const VALID_CATEGORIES = new Set(["RESEARCH", "SEMINAR", "PROJECT", "ANALYSIS"]);
 
-const MainContent = async ({ search = "", category = "" }: MainContentProps) => {
+const SORT_OPTIONS: Record<string, Prisma.DocumentFindManyArgs["orderBy"]> = {
+  recent: { createdAt: "desc" },
+  oldest: { createdAt: "asc" },
+  popular: [{ likes: "desc" }, { createdAt: "desc" }],
+};
+
+const MainContent = async ({
+  search = "",
+  category = "",
+  sort = "",
+}: MainContentProps) => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
@@ -22,7 +33,7 @@ const MainContent = async ({ search = "", category = "" }: MainContentProps) => 
   let savedDocumentIds: Set<string> = new Set();
 
   try {
-    documents = await fetchDocuments(search.trim(), category.trim());
+    documents = await fetchDocuments(search.trim(), category.trim(), sort.trim());
 
     if (userId && documents.length > 0) {
       const documentIds = documents.map((d) => d.id);
@@ -66,7 +77,7 @@ const MainContent = async ({ search = "", category = "" }: MainContentProps) => 
   );
 };
 
-async function fetchDocuments(search: string, category: string) {
+async function fetchDocuments(search: string, category: string, sort: string) {
   const where: Prisma.DocumentWhereInput = {};
 
   if (category && VALID_CATEGORIES.has(category.toUpperCase())) {
@@ -92,7 +103,7 @@ async function fetchDocuments(search: string, category: string) {
         select: { commentRecords: true },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: SORT_OPTIONS[sort] ?? SORT_OPTIONS.recent,
     take: search ? 50 : 12,
   });
 }
