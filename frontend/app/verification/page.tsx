@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from 'next/image';
 import { Suspense } from 'react';
+import BrandedLoader from '@/components/shared/BrandedLoader';
 
 const EmailVerificationContent = () => {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', '']);
@@ -215,11 +216,7 @@ const EmailVerificationContent = () => {
 
 const EmailVerificationPage = () => {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading...</p>
-      </div>
-    }>
+    <Suspense fallback={<BrandedLoader />}>
       <EmailVerificationContent />
     </Suspense>
   );
