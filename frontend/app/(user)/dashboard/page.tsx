@@ -8,6 +8,7 @@ export const metadata = userPagesMetadata.dashboard;
 type DashboardSearchParams = {
   search?: string | string[];
   category?: string | string[];
+  sort?: string | string[];
 };
 
 const first = (v: string | string[] | undefined) =>
@@ -21,13 +22,14 @@ const Page = async ({
   const params = await searchParams;
   const search = first(params.search) ?? "";
   const category = first(params.category) ?? "";
+  const sort = first(params.sort) ?? "";
 
   return (
     <div className="w-full">
       <Header />
 
       <Suspense fallback={<ResearchPageSkeleton />}>
-        <MainContent search={search} category={category} />
+        <MainContent search={search} category={category} sort={sort} />
       </Suspense>
     </div>
   );
