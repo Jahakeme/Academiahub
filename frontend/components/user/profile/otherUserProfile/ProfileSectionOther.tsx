@@ -15,7 +15,7 @@ const ProfileSectionOther = ({ profile }: { profile: Profile }) => {
     : "";
 
   return (
-    <div className="md:bg-white md:m-4 md:py-6 md:px-4 rounded-2xl">
+    <div className="md:bg-white md:m-4 pb-6 md:py-6 md:px-4 rounded-2xl">
       <div className="h-19.25 lg:h-36.25 relative bg-linear-to-r from-primary/30 to-primary/10" />
       <div className="flex gap-4 flex-col md:flex-row">
         <Avatar className="border-[3px] hidden md:block border-white shadow-md h-10 w-10 lg:w-25 lg:h-25 -mt-5">
@@ -60,7 +60,7 @@ const ProfileSectionOther = ({ profile }: { profile: Profile }) => {
             )}
           </div>
           {location && (
-            <div className="flex items-center text-black mt-4 mb-6.5 gap-1">
+            <div className="flex items-center text-black mt-4 mb-6 gap-1">
               <IoLocationOutline />
               <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
                 {location}

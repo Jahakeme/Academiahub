@@ -201,14 +201,14 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Link
               href={"/notifications"}
-              className="relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
+              className="relative flex items-center justify-center"
             >
               <IoMdNotificationsOutline className="text-2xl" />
               {!!unreadCount && unreadCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
                   {unreadCount > 99 ? "99+" : unreadCount}
                 </span>
               )}
@@ -217,7 +217,7 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
               <button
                 type="button"
                 aria-label="Open menu"
-                className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
+                className="flex items-center justify-center"
               >
                 <FaBars className="text-xl" />
               </button>
