@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Search, Loader2 } from "lucide-react";
 import { getInitials } from "@/lib/messaging/utils";
 import JoinUs from "@/components/landing/JoinUs";
+import ExploreSkeleton from "@/components/explore/ExploreSkeleton";
 import type { Document } from "@/app/_types/documents";
 import { getCategoryImage } from "@/lib/categoryImage";
 
@@ -143,9 +144,7 @@ export default function ExploreContent() {
         </div>
 
         {isLoading && documents.length === 0 ? (
-          <div className="flex justify-center py-16">
-            <Loader2 className="w-10 h-10 animate-spin text-gray-400" />
-          </div>
+          <ExploreSkeleton />
         ) : documents.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-gray-400 mb-4">
