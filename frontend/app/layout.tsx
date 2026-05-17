@@ -7,6 +7,7 @@ import { organizationJsonLd } from "@/lib/jsonld/organisation";
 import { rootLayoutMetaData } from "./data/metadataExports";
 import { personsJsonLd } from "@/lib/jsonld/person";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,6 +60,7 @@ export default function RootLayout({
           <Toaster position="top-right" reverseOrder={false} />
           {children}
         </AppProvider>
+        <Analytics />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
