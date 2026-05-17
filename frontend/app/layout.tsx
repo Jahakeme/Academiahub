@@ -8,6 +8,7 @@ import { rootLayoutMetaData } from "./data/metadataExports";
 import { personsJsonLd } from "@/lib/jsonld/person";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/next";
+import LogRocketInit from "./_components/LogRocketInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default function RootLayout({
           {children}
         </AppProvider>
         <Analytics />
+        <LogRocketInit />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
