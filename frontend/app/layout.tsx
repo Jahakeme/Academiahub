@@ -59,10 +59,10 @@ export default function RootLayout({
       >
         <AppProvider>
           <Toaster position="top-right" reverseOrder={false} />
+          <LogRocketInit />
           {children}
         </AppProvider>
         <Analytics />
-        <LogRocketInit />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
