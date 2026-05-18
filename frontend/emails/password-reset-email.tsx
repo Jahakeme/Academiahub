@@ -10,7 +10,7 @@ import {
   Preview,
   Section,
   Text,
-} from "react-email";
+} from "@react-email/components";
 
 const APP_URL = (
   process.env.NEXTAUTH_URL ?? "http://localhost:3000"
