@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { render } from "@react-email/render";
 import { VerificationEmail } from "@/emails/verification-email";
 import { PasswordResetEmail } from "@/emails/password-reset-email";
 
@@ -8,11 +9,15 @@ const CODE_EXPIRY_MINUTES = 5;
 export const RESET_TOKEN_EXPIRY_MINUTES = 30;
 
 export async function sendVerificationEmail(email: string, code: string) {
+  const html = await render(
+    VerificationEmail({ code, expiresInMinutes: CODE_EXPIRY_MINUTES })
+  );
+
   const { data, error } = await resend.emails.send({
     from: process.env.EMAIL_FROM || "noreply@yourdomain.com",
     to: email,
     subject: "Verify your email - AcademiaHub",
-    react: VerificationEmail({ code, expiresInMinutes: CODE_EXPIRY_MINUTES }),
+    html,
   });
 
   if (error) {
@@ -27,11 +32,13 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     process.env.NEXTAUTH_URL?.replace(/\/+$/, "") || "http://localhost:3000";
   const resetUrl = `${baseUrl}/reset-password?token=${encodeURIComponent(token)}`;
 
+  const html = await render(PasswordResetEmail({ resetUrl }));
+
   const { data, error } = await resend.emails.send({
     from: process.env.EMAIL_FROM || "noreply@yourdomain.com",
     to: email,
     subject: "Reset your password - AcademiaHub",
-    react: PasswordResetEmail({ resetUrl }),
+    html,
   });
 
   if (error) {
