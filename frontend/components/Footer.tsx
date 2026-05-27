@@ -159,7 +159,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 max-sm:-order-1 basis-full">
-          <FaEnvelope className="shrink-0" />
+          <Mail size={16} strokeWidth={1.5} className="shrink-0" />
           <a
             href="mailto:support@mail.academiahubafrica.org"
             className="text-sm lg:text-base leading-4.5"
