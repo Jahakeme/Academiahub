@@ -15,36 +15,18 @@ import SaveButton from "@/components/SaveButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-const PublicationDetails = ({
-  id,
-  details,
-  isLiked,
-  isSaved,
-  isOwner,
-}: {
-  details: Document;
-  isLiked: boolean;
-  isSaved: boolean;
-  id: string;
-  isOwner: boolean;
-}) => {
+const PublicationDetails = ({id, details, isLiked, isSaved, isOwner }: { details: Document; isLiked: boolean; isSaved: boolean; id: string; isOwner: boolean }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
 
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
       {/* profile pic and name */}
 
       <div className="flex items-start justify-between">
-        <Link
-          href={`/profile/${details.authorId}`}
-          className="flex gap-1.5 md:gap-1 mb-2.75 items-center"
-        >
-          <Avatar className="size-10 rounded-full! p-1 max-sm:border border-white lg:size-15">
-            <AvatarImage
-              className="rounded-full"
-              src={details.author.image || undefined}
-            />
+        <Link href={`/profile/${details.authorId}`} className="flex gap-1.5 md:gap-1 mb-2.75 items-center">
+          <Avatar className="size-10 p-1 max-sm:border border-white lg:size-15">
+            <AvatarImage src={details.author.image || undefined} />
             <AvatarFallback>
               {getInitials(details.author.name || "")}
             </AvatarFallback>
@@ -61,11 +43,7 @@ const PublicationDetails = ({
         </Link>
 
         {/* message button for mobile */}
-        <MessageAuthorButton
-          authorId={details.authorId}
-          className="md:hidden p-1"
-          label="Message"
-        />
+        <MessageAuthorButton authorId={details.authorId} className="md:hidden p-1" label="Message" />
       </div>
 
       <div className="relative rounded-[12px] w-full h-34.25 md:h-59.75 mb-4.25 lg:mb-5.5">
@@ -77,7 +55,7 @@ const PublicationDetails = ({
         />
       </div>
 
-      <h2 className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
+      <h2  className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
         {details.title}
       </h2>
 
@@ -101,9 +79,7 @@ const PublicationDetails = ({
           <p className="">{downloadCount}</p>
         </span>
       </div>
-      <div
-        className={`grid ${isOwner ? "grid-cols-2" : "grid-cols-3"} gap-2 md:gap-5 mb-3 lg:mb-5 justify-between`}
-      >
+      <div className={`grid ${isOwner ? "grid-cols-2" : "grid-cols-3"} gap-2 md:gap-5 mb-3 lg:mb-5 justify-between`}>
         <DownloadButton
           documentId={details.id}
           fileUrl={details.fileUrl}
@@ -114,28 +90,14 @@ const PublicationDetails = ({
           <span className="md:hidden">Download</span>
           <span className="hidden md:inline">Download Publication</span>
         </DownloadButton>
-        <SaveButton
-          documentId={details.id}
-          initialSaved={isSaved}
-          variant="button"
-        />
+        <SaveButton documentId={details.id} initialSaved={isSaved} variant="button" />
 
         {!isOwner && (
-          <Button
-            onClick={() => router.push(`/publication/${id}/report-issue`)}
-            className="border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base"
-            variant="outline"
-          >
-            Report
-          </Button>
+          <Button onClick={() => router.push(`/publication/${id}/report-issue`)} className="border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base" variant="outline">Report</Button>
         )}
       </div>
 
-      <Like
-        documentId={details.id}
-        initialLiked={isLiked}
-        initialCount={details.likes}
-      />
+      <Like documentId={details.id} initialLiked={isLiked} initialCount={details.likes} />
     </div>
   );
 };
